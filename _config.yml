@@ -9,8 +9,8 @@ pygments: true
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Jekyll Bootstrap
-tagline: Site Tagline
+title : Goofy's Blog.
+tagline: Java Web E-Commerce
 author :
   name : Goofy
   email : goofy.lp@gmail.com
