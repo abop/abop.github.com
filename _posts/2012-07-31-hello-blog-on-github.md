@@ -11,7 +11,7 @@ tags: [helloworld, jekyll, github]
 ## Nihao!
 
 Come on!
-{% highlight java linenos %}
+{% highlight java %}
 package com.github.abop
 
 public class MyClass{
