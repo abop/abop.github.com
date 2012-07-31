@@ -1,6 +1,6 @@
 # About this blog
 
-This my personal tech-blog built by [jeckll-bootstrap](https://github.com/plusjade/jekyll-bootstrap).
+This my personal tech-blog built by [jekyll-bootstrap](https://github.com/plusjade/jekyll-bootstrap).
 
 This blog focus on:
 
