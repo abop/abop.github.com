@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Hello Blog on Github"
-description: ""
+description: "My first blog on Github"
 category: blabla
-tags: [helloworld,jekyll,github]
+tags: [helloworld, jekyll, github]
 ---
 {% include JB/setup %}
 
