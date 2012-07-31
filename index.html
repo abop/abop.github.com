@@ -5,6 +5,10 @@ tagline: Hello World!
 ---
 {% include JB/setup %}
 
+{% for post in site.posts %}
+{{ post.date | date_to_string }} » {{ post.title }}
+{% endfor %}
+
 {% assign posts_collate = site.posts %}
 
 {% include JB/posts_collate %}
