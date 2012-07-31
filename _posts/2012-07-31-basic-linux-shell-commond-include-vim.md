@@ -19,11 +19,11 @@ tags: [shell, linux, vim]
 
 ## vim
 * :split 分栏
-ctrl+ 方向键 切换分栏
-:e 打开文件
-:ls 查看当前打开的buffer（文件）
-:b num 切换文件（其中num为buffer list中的编号）
-:bn -- next buffer in the buffer list
-:bp -- previous buffer in the buffer list
-:b# -- previous buffer you was in
-gg=G格式化文件（"start=end"）
+* ctrl+ 方向键 切换分栏
+* :e 打开文件
+* :ls 查看当前打开的buffer（文件）
+* :b num 切换文件（其中num为buffer list中的编号）
+* :bn -- next buffer in the buffer list
+* :bp -- previous buffer in the buffer list
+* :b# -- previous buffer you was in
+* gg=G格式化文件（"start=end"）
