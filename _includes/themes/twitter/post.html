@@ -36,5 +36,14 @@
     {% include JB/tags_list %}
     </ul>
   {% endunless %}  
+    <h3>Latest posts</h3>	
+    {% for post in site.posts limit: 10 %}
+    <p>
+    	{{ post.date | date_to_string }} >> <a href="{{ post.url }}">{{ post.title }}</a>
+    <p>
+    {% endfor %}
+  {% unless site.posts.size < 10 %}
+    <a href="{{BASE_URL}}/archive.html">More>></a>
+  {% endunless %}
   </div>
 </div>

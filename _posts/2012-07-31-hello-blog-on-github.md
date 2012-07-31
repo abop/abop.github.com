@@ -11,3 +11,12 @@ tags: [helloworld, jekyll, github]
 ## Nihao!
 
 Come on!
+{% highlight java linenos %}
+package com.github.abop
+
+public class MyClass{
+	public int main(){
+		return null;
+	}
+}
+{% endhighlight %}

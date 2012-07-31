@@ -1,10 +1,22 @@
 ---
-layout: page
-title: Latest blogs
+layout: index
+title: "Goofy's Blog"
 tagline: Hello World!
 ---
-{% include JB/setup %}
 
-{% for post in site.posts %}
-{{ post.date | date_to_string }} >> [{{ post.title }}]({{ post.url }})
-{% endfor %}
+>### About this blog
+>
+>* This my personal tech-blog built by [jekyll-bootstrap](https://github.com/plusjade/jekyll-bootstrap).
+>
+>### This blog focus on:
+>
+>* *Java* based *web* developing
+>
+>### About me
+>
+>* Goofy/王正阳/古飞
+>* Working @ Taobao.com.
+>
+>### License
+>
+>[Creative Commons](http://creativecommons.org/licenses/by-nc-sa/3.0/)
