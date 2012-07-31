@@ -1,3 +1,11 @@
+---
+layout: page
+title : About
+header : About me
+group: navigation
+---
+
+
 # About this blog
 
 This my personal tech-blog built by [jekyll-bootstrap](https://github.com/plusjade/jekyll-bootstrap).
