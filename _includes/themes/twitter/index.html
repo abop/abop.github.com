@@ -7,12 +7,11 @@
 		
 		{% for post in site.posts reversed limit 20 %}
 		<div>
-		<br>
 		<hr>
 		
 		<h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
 		<h3>{{ post.date | date_to_string }}</h3>
-		<hr>
+		<br>
 		{{ post.content }}
 		
 		</div>
