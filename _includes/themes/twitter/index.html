@@ -2,13 +2,16 @@
 
 	<div class="span8">
 		{{ content }}
-		<hr>
+		
 		{% for post in site.posts limit 20 %}
+		<hr>
+		
 		<h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
 		{{ post.content }}
-		<hr>
+		
 		{% endfor %}
 		<hr>
+		
 		<div class="pagination">
 			<ul>
 				<li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">More>></a></li>
