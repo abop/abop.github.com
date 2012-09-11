@@ -16,8 +16,8 @@ tagline: Hello World!
 >
 >* Goofy/王正阳/古飞
 >* Working @ Taobao.com.
->* http://twitter.com/GoofyWang
->* http://weibo.com/love4sweetie
+>* [GoofyWang@Twitter](http://twitter.com/GoofyWang)
+>* [tGoofy@Weibo](http://weibo.com/love4sweetie)
 >* goofy.lp#gmail#com
 >
 >### License
