@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Goodbye Microsoft, Hello Facebook!
-catagory: career
+category: career
 published: true
 ---
 
