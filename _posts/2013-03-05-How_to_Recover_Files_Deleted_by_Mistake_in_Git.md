@@ -1,6 +1,6 @@
 ---
 layout: post
-title: how to recover files deleted by mistake in git
+title: How to Recover Files Deleted by Mistake in Git
 category: Dev
 tags: [git, recover, delete]
 published: true
