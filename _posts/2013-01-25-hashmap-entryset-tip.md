@@ -7,8 +7,6 @@ tags: [java, HashMap, entrySet]
 ---
 
 {% include JB/setup %}
-# A trap when iterate on HashMap.entrySet()
-
 
  >If the map is modified while an iteration over the set is in progress (except through the iterator's own remove operation, or through the setValue operation on a map entry returned by the iterator) the results of the iteration are undefined. 
 
