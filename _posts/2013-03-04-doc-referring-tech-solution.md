@@ -1,22 +1,9 @@
 ---
-一些公用的脚本，不方便互相引用，浪费人力。考虑把开发中心的文档作为资源，用于文档间互相引用，或者被任务引用
-
-交互设计
------------
-以文当中书写关键词的形式实现。格式如(rename重命名可选)：
-
-1. 引用开发中心的文档
-> --download[doc://docId rename]
-
-2. 引用HDFS上的文件
-> --download[hdfs://hdfsPath rename]
-
-技术方案
-published: false
+layout: post
+title: 开发中心资源管理技术方案
+category: work
+published: true
 ---
-
-开发中心资源管理技术方案
-===========
 
 需求背景
 ----------------
