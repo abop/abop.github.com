@@ -191,7 +191,7 @@ Webx是采用MVC三层架构。请求的上下文信息（RequestContext、Servl
 
 
 Webapp\WEB-INF\web.xml是SpringExt的配置文件，下面是mercury-web中的样本：
-
+<pre>
 {% highlight xml %}
 <?xml version="1.0" encoding="GB2312"?>
 
@@ -343,6 +343,8 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 
 {% endhighlight %}
 
+</pre>
+
 一个Webx应用的启动流程如下：
 
 1. 初始化context-param
@@ -351,7 +353,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 
 3. 加载各个filter：其中TimerFilter（timer）用来记录serverlet执行时间，WebxFrameworkFilter（webx）用来处理web请求，SetLoggingContextFilter（mdc）用来通过SLF4J MDC来记录用户和请求的信息。三者顺序为timer->webx->mdc。
 
- [web.xml中各种元素的含义](http://ajava.org/readbook/J2EE/servletjsphxbc2/17212.html)
+[web.xml中各种元素的含义](http://ajava.org/readbook/J2EE/servletjsphxbc2/17212.html)
 
 <h4 id="webx_request_handdling">Webx响应和处理请求的流程</h4>
 
@@ -370,7 +372,7 @@ WebxController对象是由每个子应用独享的，子应用app1和app2可以�
 Pipeline也是由各子应用自己来配置的。假如pipeline碰到无法处理的请求，如静态页面、图片等，pipeline应当执行&lt;exit/> valve强制退出。然后WebxRootController就会“放弃控制”，这意味着request将被返还给/WEB-INF/web.xml中定义的servlet、filter或者返还给servlet engine本身来处理。
 
 webapp\common\pipeline.xml配置了mercury-web的PipeLine：
-
+<pre>
 {% highlight xml %}
 <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -476,7 +478,7 @@ p:action="cleanup" />
 
 </beans:beans>
 {% endhighlight %}
-
+</pre>
 假设用户以URL：http://favorite.daily.taobao.net/collect_list.htm 来访问Webx应用。WebxFrameworkFilter接收请求，并且一路顺利到达pipeline。然后Pipeline开始依次执行它的valves（下面的描述略过一些相对次要的步骤）：
 
 1. &lt;analyzeURL> - 分析URL
