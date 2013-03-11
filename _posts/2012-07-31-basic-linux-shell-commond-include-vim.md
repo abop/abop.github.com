@@ -18,6 +18,7 @@ tags: [shell, linux, vim]
 ====
 
 ## vim
+* ctrl+L refresh screen buffer
 * :split 分栏
 * ctrl+ 方向键 切换分栏
 * :e 打开文件

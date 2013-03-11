@@ -1,13 +1,11 @@
 ---
 layout: post
+title: "Maven, Webx, Velocity 学习总结"
 description: ""
 category: Java
 tags: [webx, maven, velocity]
 published: true
 ---
-
-Maven, Webx, Velocity 学习总结
-==========
 
 * [综述](#overview)
 * [Maven](#maven)
@@ -67,6 +65,8 @@ Maven, Webx, Velocity 学习总结
 
 4. 依赖的版本定义在父pom（项目pom）中，子pom（模块pom）设置&lt;parent>，继承父pom
 
+    ![pom](/pics/pom.jpg)
+
 5. 设置一个虚拟的总项目，多个实际项目作为总项目的模块
 
 <h2 id="webx">Webx</h2>
@@ -81,9 +81,8 @@ Webx是采用MVC三层架构。请求的上下文信息（RequestContext、Servl
 
 整个处理流程的控制由Pipeline（水管）中配置各种Valve（阀门）实现，简易的流程图如下：
 
+![pipeline](/pics/req_process.gif)
 
-
-图表 3‑1
 
 <h4 id="layer">Webx各层我们要做的工作的工作</h4>
 
@@ -361,6 +360,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 
 当一个HTTP请求到达时，首先由WebxFrameworkFilter接手这个请求（参考Webx应用启动流程），下图是WebxFrameworkFilter处理一个WEB请求的过程：
 
+![webxProcess](/pics/webx_req_process.jpg)
 
 
 如图所示，WebxFrameworkFilter接到请求以后，就会调用WebxRootController。从这里开始，进入Spring的世界。此后所有的对象：WebxRootController、WebxController、RequestContext、Pipeline等，全部是通过SpringExt配置在Spring Context中的。
