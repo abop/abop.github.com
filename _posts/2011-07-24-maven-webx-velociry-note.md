@@ -187,7 +187,7 @@ Webx是采用MVC三层架构。请求的上下文信息（RequestContext、Servl
        │ └─test.java.com.taobao.mercury
        └─target
 
-<h4 id="webx_start_process">Webx应用启动流程<h4/>
+<h4 id="webx_start_process">Webx应用启动流程</h4>
 
 
 Webapp\WEB-INF\web.xml是SpringExt的配置文件，下面是mercury-web中的样本：
