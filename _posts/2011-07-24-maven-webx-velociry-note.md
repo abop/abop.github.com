@@ -98,7 +98,9 @@ Webx是采用MVC三层架构。请求的上下文信息（RequestContext、Servl
 <h4 id="webx_basics">Webx的基本概念</h4>
 
 1. 页面驱动：以页面（view）为主导，先写页面，再写和页面配套的程序模块，通过规则，查找页面所对应的程序模块
+
 2. Pull Tools：有一些定义在webx.xml中，另一些默认定义在框架中。这些tools可以再vm模板中被直接引用。Global作用域的tool在系统初始化时创建，Request作用域的tool在每次HTTP请求时创建。
+
 3. Modules：turbine中的基本编程模块。Screen用来处理页面显示逻辑；Control和screen类似，但可以被别的screen或layout引用；Action处理用户提交表单。所有module都实现Module接口：public interface Module {void execute(RunData rundata) throws WebxException;}
 
 <h4 id="webx_dir_structure">Webx项目目录结构</h4>
@@ -351,7 +353,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 
 3. 加载各个filter：其中TimerFilter（timer）用来记录serverlet执行时间，WebxFrameworkFilter（webx）用来处理web请求，SetLoggingContextFilter（mdc）用来通过SLF4J MDC来记录用户和请求的信息。三者顺序为timer->webx->mdc。
 
- [web.xml中各种元素的含义](http://ajava.org/readbook/J2EE/servletjsphxbc2/17212.html)
+> [web.xml中各种元素的含义](http://ajava.org/readbook/J2EE/servletjsphxbc2/17212.html)
 
 <h4 id="webx_request_handdling">Webx响应和处理请求的流程</h4>
 
@@ -539,7 +541,7 @@ p:action="cleanup" />
 
     和外部重定向不同，外部重定向是向浏览器返回一个302或303 response，其中包含Location header，浏览器看到这样的response以后，就会发出第二个请求。而内部重定向发生在pipeline内部，浏览器并不了解内部重定向。
 
-<h2 id="velecity">Velocity部分</h2>
+<h2 id="velocity">Velocity部分</h2>
 
 尚未系统学习，只是看代码做了一些了解。
 
