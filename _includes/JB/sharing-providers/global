@@ -3,7 +3,9 @@
 <ul class="post-share ulno mob">
 
 <!-- Hacker News -->
-<li class="hn"><span id="hnews"></span>
+<!-- <li class="hn"><span id="hnews"></span> -->
+
+<li><wb:share-button size="middle" appkey="2724686563" relateuid="1164102725" ></wb:share-button></li>
 
 <!-- Twitter -->
 <li class="tw"><a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ page.title }}" data-via="{{ site.JB.sharing.twitter.via }}" data-related="{{ site.author.twitter }}" data-count="{{ site.JB.sharing.twitter.count }}" data-size="{{ site.JB.sharing.twitter.size }}">Tweet</a>
