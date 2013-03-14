@@ -68,4 +68,26 @@ html, body {
 	border:1px solid #4C964D;
 	color:#FFF;
 }
-	
+
+/* sharing ======================================*/
+.post-share{
+    position:fixed;
+    z-index:999 !important;
+    left:0px;
+    top:45%;
+    background-color:rgba(255,255,255,0);
+    padding-top:8px;
+    }
+
+.post-share li{
+    padding-left:7px;
+    text-align:center;
+    display:block;
+    height:30px;
+    text-align:left;
+    }
+
+li.hn iframe{
+    margin:-9px 0 0 -8px;
+    border:none;
+}
