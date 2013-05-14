@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vim | Goofy's Blog]]></title>
+  <link href="http://javame.tk/blog/categories/vim/atom.xml" rel="self"/>
+  <link href="http://javame.tk/"/>
+  <updated>2013-05-14T17:29:22+08:00</updated>
+  <id>http://javame.tk/</id>
+  <author>
+    <name><![CDATA[Goofy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Basic linux shell commond (include vim)]]></title>
+    <link href="http://javame.tk/blog/2012/07/31/basic-linux-shell-commond-include-vim/"/>
+    <updated>2012-07-31T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2012/07/31/basic-linux-shell-commond-include-vim</id>
+    <content type="html"><![CDATA[<h2>linux</h2>
+
+<ul>
+<li>执行命令后面加 &amp; ， 可以让任务后台运行</li>
+<li>jobs查看当前任务</li>
+<li>fg jobnumber切换某任务到前台</li>
+<li>普通任务执行时ctrl+z挂起到后台，但任务会暂停</li>
+<li>bg jobnumber让挂起任务运行</li>
+<li>fg 切换到前台</li>
+</ul>
+
+
+<p>====</p>
+
+<h2>vim</h2>
+
+<ul>
+<li>ctrl+L refresh screen buffer</li>
+<li>:split 分栏</li>
+<li>ctrl+ 方向键 切换分栏</li>
+<li>:e 打开文件</li>
+<li>:ls 查看当前打开的buffer（文件）</li>
+<li>:b num 切换文件（其中num为buffer list中的编号）</li>
+<li>:bn &mdash; next buffer in the buffer list</li>
+<li>:bp &mdash; previous buffer in the buffer list</li>
+<li>:b# &mdash; previous buffer you was in</li>
+<li>gg=G格式化文件（"start=end"）</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

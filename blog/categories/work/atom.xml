@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: work | Goofy's Blog]]></title>
+  <link href="http://javame.tk/blog/categories/work/atom.xml" rel="self"/>
+  <link href="http://javame.tk/"/>
+  <updated>2013-05-14T17:29:22+08:00</updated>
+  <id>http://javame.tk/</id>
+  <author>
+    <name><![CDATA[Goofy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[开发中心资源管理技术方案]]></title>
+    <link href="http://javame.tk/blog/2013/03/04/doc-referring-tech-solution/"/>
+    <updated>2013-03-04T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/03/04/doc-referring-tech-solution</id>
+    <content type="html"><![CDATA[<h2>需求背景</h2>
+
+<p>一些公用的脚本，不方便互相引用，浪费人力。考虑把开发中心的文档作为资源，用于文档间互相引用，或者被任务引用</p>
+
+<h2>交互设计</h2>
+
+<p>以文当中书写关键词的形式实现。格式如(rename重命名可选)：</p>
+
+<ol>
+<li><p>引用开发中心的文档</p>
+
+<blockquote><p>&mdash;download[doc://docId rename]</p></blockquote></li>
+<li><p>引用HDFS上的文件</p>
+
+<blockquote><p>&mdash;download[hdfs://hdfsPath rename]</p></blockquote></li>
+</ol>
+
+
+<h2>技术方案</h2>
+
+<ol>
+<li>对于ShellJob和HiveJob在JobUtil createJob的时候解析脚本中的资源定义，添加到资源文件列表中</li>
+<li>把要运行job的脚本中的资源定义暂时删除（不提交数据库）</li>
+<li>在前置处理单元DownloadJob中处理文档中直接定义的资源下载</li>
+<li>对于开发中心的job，创建WithProcesserJob，添加DownloadJob到前置任务</li>
+<li>在开发中心 文档标题中 显示文档ID</li>
+<li>在开发中心提供上传资源到HDFS的功能，上传成功后直接将资源引用代码插入文档第一行</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

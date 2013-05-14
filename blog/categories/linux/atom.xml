@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | Goofy's Blog]]></title>
+  <link href="http://javame.tk/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://javame.tk/"/>
+  <updated>2013-05-14T17:29:22+08:00</updated>
+  <id>http://javame.tk/</id>
+  <author>
+    <name><![CDATA[Goofy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using Variables and Shell-commands in Sed]]></title>
+    <link href="http://javame.tk/blog/2013/05/13/using-variables-and-shell-commands-in-sed/"/>
+    <updated>2013-05-13T11:48:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/05/13/using-variables-and-shell-commands-in-sed</id>
+    <content type="html"><![CDATA[<p>VIA:(<a href="http://blog.csdn.net/linwhwylb/article/details/7184748">http://blog.csdn.net/linwhwylb/article/details/7184748</a>)</p>
+
+<p>在使用sed对日志或者其它文本进行parse的过程当中，有时候我们需要引用外部变量的值，</p>
+
+<p>或者获取一个shell命令执行的结果，以便达到更加可观的输出结果。这里介绍如何做到。</p>
+
+<h2>sed中使用变量替换</h2>
+
+<ol><li>
+sed命令使用双引号的情况下，使用$var直接引用
+
+```bash
+$ echo|sed "s/^/$RANDOM.rmvb_/g"
+29328.rmvb_
+# 上面例子引用了一个环境变量$RANDOM的值
+```
+</li>
+<li>
+sed命令使用单引号的情况下，使用'"$var"'引用
+
+类似，我们可以看到
+
+```bash
+$ echo|sed 's/^/'"$RANDOM"'.rmvb_/g'
+31338.rmvb_
+```
+</li></ol>
+
+
+<h2>sed中执行外部命令</h2>
+
+<ol><li>
+sed命令使用单引号的情况下使用'`shell command`'或者'$(shell command)'引用命令执行的结果
+
+还是以上面案例分析，例子如下
+
+```bash
+$ echo|sed 's/^/'`echo $RANDOM`'.rmvb_/g'
+8063.rmvb_
+# 上面的例子使用了旧式的命令替换，也可以采用新式的命令替换方法，如下
+
+$ echo|sed 's/^/'$(echo $RANDOM)'.rmvb_/g'
+18554.rmvb_
+# 下面例子取用当前日期作为结果的一部分，如下
+
+$ echo|sed 's/^/'$(date +"%Y%m%d")'.rmvb_/g'
+20120108.rmvb_
+```
+</li>
+
+<li>sed命令使用双引号的情况下直接`shell command`或者$(shell command)引用命令执行的结果
+类似的，双引号的情况，如下
+
+```bash
+$ echo|sed "s/^/$(date +"%Y%m%d").rmvb_/g"
+20120108.rmvb_
+# 使用环境变量$RANDOM以及旧式命令替换的例子
+
+$ echo|sed "s/^/`echo $RANDOM`.rmvb_/g"
+4988.rmvb_
+```
+</li></ol>
+
+
+<h2>总结</h2>
+
+<p>在sed语句里面，变量替换或者执行shell命令，双引号比单引号少绕一些弯子</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Basic linux shell commond (include vim)]]></title>
+    <link href="http://javame.tk/blog/2012/07/31/basic-linux-shell-commond-include-vim/"/>
+    <updated>2012-07-31T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2012/07/31/basic-linux-shell-commond-include-vim</id>
+    <content type="html"><![CDATA[<h2>linux</h2>
+
+<ul>
+<li>执行命令后面加 &amp; ， 可以让任务后台运行</li>
+<li>jobs查看当前任务</li>
+<li>fg jobnumber切换某任务到前台</li>
+<li>普通任务执行时ctrl+z挂起到后台，但任务会暂停</li>
+<li>bg jobnumber让挂起任务运行</li>
+<li>fg 切换到前台</li>
+</ul>
+
+
+<p>====</p>
+
+<h2>vim</h2>
+
+<ul>
+<li>ctrl+L refresh screen buffer</li>
+<li>:split 分栏</li>
+<li>ctrl+ 方向键 切换分栏</li>
+<li>:e 打开文件</li>
+<li>:ls 查看当前打开的buffer（文件）</li>
+<li>:b num 切换文件（其中num为buffer list中的编号）</li>
+<li>:bn &mdash; next buffer in the buffer list</li>
+<li>:bp &mdash; previous buffer in the buffer list</li>
+<li>:b# &mdash; previous buffer you was in</li>
+<li>gg=G格式化文件（"start=end"）</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

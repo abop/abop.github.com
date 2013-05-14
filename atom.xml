@@ -1,0 +1,1385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Goofy's Blog]]></title>
+  <link href="http://javame.tk/atom.xml" rel="self"/>
+  <link href="http://javame.tk/"/>
+  <updated>2013-05-14T17:29:22+08:00</updated>
+  <id>http://javame.tk/</id>
+  <author>
+    <name><![CDATA[Goofy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using Variables and Shell-commands in Sed]]></title>
+    <link href="http://javame.tk/blog/2013/05/13/using-variables-and-shell-commands-in-sed/"/>
+    <updated>2013-05-13T11:48:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/05/13/using-variables-and-shell-commands-in-sed</id>
+    <content type="html"><![CDATA[<p>VIA:(<a href="http://blog.csdn.net/linwhwylb/article/details/7184748">http://blog.csdn.net/linwhwylb/article/details/7184748</a>)</p>
+
+<p>在使用sed对日志或者其它文本进行parse的过程当中，有时候我们需要引用外部变量的值，</p>
+
+<p>或者获取一个shell命令执行的结果，以便达到更加可观的输出结果。这里介绍如何做到。</p>
+
+<h2>sed中使用变量替换</h2>
+
+<ol><li>
+sed命令使用双引号的情况下，使用$var直接引用
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s2">&quot;s/^/$RANDOM.rmvb_/g&quot;</span>
+</span><span class='line'>29328.rmvb_
+</span><span class='line'><span class="c"># 上面例子引用了一个环境变量$RANDOM的值</span>
+</span></code></pre></td></tr></table></div></figure>
+</li>
+<li>
+sed命令使用单引号的情况下，使用&#8217;&#8221;$var&#8221;&#8217;引用
+
+类似，我们可以看到
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="s2">&quot;$RANDOM&quot;</span><span class="s1">&#39;.rmvb_/g&#39;</span>
+</span><span class='line'>31338.rmvb_
+</span></code></pre></td></tr></table></div></figure>
+</li></ol>
+
+
+<h2>sed中执行外部命令</h2>
+
+<ol><li>
+sed命令使用单引号的情况下使用&#8217;`shell command`&#8217;或者&#8217;$(shell command)&#8217;引用命令执行的结果
+
+还是以上面案例分析，例子如下
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$RANDOM</span><span class="sb">`</span><span class="s1">&#39;.rmvb_/g&#39;</span>
+</span><span class='line'>8063.rmvb_
+</span><span class='line'><span class="c"># 上面的例子使用了旧式的命令替换，也可以采用新式的命令替换方法，如下</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$RANDOM</span><span class="k">)</span><span class="s1">&#39;.rmvb_/g&#39;</span>
+</span><span class='line'>18554.rmvb_
+</span><span class='line'><span class="c"># 下面例子取用当前日期作为结果的一部分，如下</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="k">$(</span>date +<span class="s2">&quot;%Y%m%d&quot;</span><span class="k">)</span><span class="s1">&#39;.rmvb_/g&#39;</span>
+</span><span class='line'>20120108.rmvb_
+</span></code></pre></td></tr></table></div></figure>
+</li>
+
+<li>sed命令使用双引号的情况下直接`shell command`或者$(shell command)引用命令执行的结果
+类似的，双引号的情况，如下
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s2">&quot;s/^/$(date +&quot;</span>%Y%m%d<span class="s2">&quot;).rmvb_/g&quot;</span>
+</span><span class='line'>20120108.rmvb_
+</span><span class='line'><span class="c"># 使用环境变量$RANDOM以及旧式命令替换的例子</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s2">&quot;s/^/`echo $RANDOM`.rmvb_/g&quot;</span>
+</span><span class='line'>4988.rmvb_
+</span></code></pre></td></tr></table></div></figure>
+</li></ol>
+
+
+<h2>总结</h2>
+
+<p>在sed语句里面，变量替换或者执行shell命令，双引号比单引号少绕一些弯子</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Volatile In Java]]></title>
+    <link href="http://javame.tk/blog/2013/04/24/volatile-in-java/"/>
+    <updated>2013-04-24T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/04/24/volatile-in-java</id>
+    <content type="html"><![CDATA[<p><strong>VIA: <a href="http://ifeve.com/jmm-faq-volatile/">http://ifeve.com/jmm-faq-volatile/</a></strong></p>
+
+<hr />
+
+<p>原文：<a href="http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html#volatile">http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html#volatile</a></p>
+
+<p>译者：Alex</p>
+
+<p>Volitile字段是用于线程间通讯的特殊字段。每次读volitile字段都会看到其它线程写入该字段的最新值；实际上，程序员之所以要定义volitile字段是因为在某些情况下由于缓存和重排序所看到的陈旧的变量值是不可接受的。编译器和运行时禁止在寄存器里面分配它们。它们还必须保证，在它们写好之后，它们被从缓冲区刷新到主存中，因此，它们立即能够对其他线程可见。相同地，在读取一个volatile字段之前，缓冲区必须失效，因为值是存在于主存中而不是本地处理器缓冲区。在重排序访问volatile变量的时候还有其他的限制。</p>
+
+<!--more-->
+
+
+<p>在旧的内存模型下，访问volatile变量不能被重排序，但是，它们可能和访问非volatile变量一起被重排序。这破坏了volatile字段从一个线程到另外一个线程作为一个信号条件的手段。</p>
+
+<p>在新的内存模型下，volatile变量仍然不能彼此重排序。和旧模型不同的时候，volatile周围的普通字段的也不再能够随便的重排序了。写入一个volatile字段和释放监视器有相同的内存影响，而且读取volatile字段和获取监视器也有相同的内存影响。事实上，因为新的内存模型在重排序volatile字段访问上面和其他字段（volatile或者非volatile）访问上面有了更严格的约束。当线程A写入一个volatile字段f的时候，如果线程B读取f的话 ，那么对线程A可见的任何东西都变得对线程B可见了。</p>
+
+<p>如下例子展示了volatile字段应该如何使用：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">VolatileExample</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">v</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">writer</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reader</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">v</span> <span class="o">==</span> <span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">//uses x - guaranteed to see 42.</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>假设一个线程叫做“writer”，另外一个线程叫做“reader”。对变量v的写操作会等到变量x写入到内存之后，然后读线程就可以看见v的值。因此，如果reader线程看到了v的值为true，那么，它也保证能够看到在之前发生的写入42这个操作。而这在旧的内存模型中却未必是这样的。如果v不是volatile变量，那么，编译器可以在writer线程中重排序写入操作，那么reader线程中的读取x变量的操作可能会看到0。</p>
+
+<p>实际上，volatile的语义已经被加强了，已经快达到同步的级别了。为了可见性的原因，每次读取和写入一个volatile字段已经像一个半同步操作了</p>
+
+<p>重点注意：对两个线程来说，为了正确的设置happens-before关系，访问相同的volatile变量是很重要的。以下的结论是不正确的：当线程A写volatile字段f的时候，线程A可见的所有东西，在线程B读取volatile的字段g之后，变得对线程B可见了。释放操作和获取操作必须匹配（也就是在同一个volatile字段上面完成）。</p>
+
+<h2>原文</h2>
+
+<p>What does volatile do?
+Volatile fields are special fields which are used for communicating state between threads. Each read of a volatile will see the last write to that volatile by any thread; in effect, they are designated by the programmer as fields for which it is never acceptable to see a “stale” value as a result of caching or reordering. The compiler and runtime are prohibited from allocating them in registers. They must also ensure that after they are written, they are flushed out of the cache to main memory, so they can immediately become visible to other threads. Similarly, before a volatile field is read, the cache must be invalidated so that the value in main memory, not the local processor cache, is the one seen. There are also additional restrictions on reordering accesses to volatile variables.</p>
+
+<p>Under the old memory model, accesses to volatile variables could not be reordered with each other, but they could be reordered with nonvolatile variable accesses. This undermined the usefulness of volatile fields as a means of signaling conditions from one thread to another.</p>
+
+<p>Under the new memory model, it is still true that volatile variables cannot be reordered with each other. The difference is that it is now no longer so easy to reorder normal field accesses around them. Writing to a volatile field has the same memory effect as a monitor release, and reading from a volatile field has the same memory effect as a monitor acquire. In effect, because the new memory model places stricter constraints on reordering of volatile field accesses with other field accesses, volatile or not, anything that was visible to thread A when it writes to volatile field f becomes visible to thread B when it reads f.</p>
+
+<p>Here is a simple example of how volatile fields can be used:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">VolatileExample</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">v</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">writer</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reader</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">v</span> <span class="o">==</span> <span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">//uses x - guaranteed to see 42.</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assume that one thread is calling writer, and another is calling reader. The write to v in writer releases the write to x to memory, and the read of v acquires that value from memory. Thus, if the reader sees the value true for v, it is also guaranteed to see the write to 42 that happened before it. This would not have been true under the old memory model.  If v were not volatile, then the compiler could reorder the writes in writer, and reader‘s read of x might see 0.</p>
+
+<p>Effectively, the semantics of volatile have been strengthened substantially, almost to the level of synchronization. Each read or write of a volatile field acts like “half” a synchronization, for purposes of visibility.</p>
+
+<p>Important Note: Note that it is important for both threads to access the same volatile variable in order to properly set up the happens-before relationship. It is not the case that everything visible to thread A when it writes volatile field f becomes visible to thread B after it reads volatile field g. The release and acquire have to “match” (i.e., be performed on the same volatile field) to have the right semantics.</p>
+
+<p>（全文完）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Enter Special Characters in Ubuntu(Linux)]]></title>
+    <link href="http://javame.tk/blog/2013/03/21/enter-special-char-in-linux-/"/>
+    <updated>2013-03-21T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/03/21/enter-special-char-in-linux-</id>
+    <content type="html"><![CDATA[<pre><code>To enter a character by its code point, hold down Ctrl and Shift, type u followed by the four-character code point, then release Ctrl and Shift. If you often use characters that you can't easily access with other methods, you might find it useful to memorize the code point for those characters so you can enter them quickly.
+</code></pre>
+
+<p>Ref: <a href="https://help.ubuntu.com/lts/ubuntu-help/tips-specialchars.html#ctrlshiftu">Ubuntu Documentation</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Recover Files Deleted by Mistake in Git]]></title>
+    <link href="http://javame.tk/blog/2013/03/05/How_to_Recover_Files_Deleted_by_Mistake_in_Git/"/>
+    <updated>2013-03-05T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/03/05/How_to_Recover_Files_Deleted_by_Mistake_in_Git</id>
+    <content type="html"><![CDATA[<ol>
+<li>找到commit记录如：f5810e08df0cb7cf82608d65cdb709cb430df2ea</li>
+<li>执行以下命令即可恢复删除的文件
+
+<blockquote><pre><code>git checkout f5810e08df0cb7cf82608d65cdb709cb430df2ea path/to/file
+</code></pre></blockquote></li>
+<li>重新commit push</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Goodbye Microsoft, Hello Facebook!]]></title>
+    <link href="http://javame.tk/blog/2013/03/05/Goodbye_Microsoft_Hello_Facebook/"/>
+    <updated>2013-03-05T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/03/05/Goodbye_Microsoft_Hello_Facebook</id>
+    <content type="html"><![CDATA[<p>VIA: <a href="http://www.36kr.com/p/201666.html">36kr.com</a></p>
+
+<p>编者注：Philip Su在1998年加入微软，开始时是一位软件工程师。12年后，Philip Su从微软辞职，当时是微软的主群经理（Principal Group Manager），又一次以一位普通软件工程师的身份加入Facebook。Philip Su现任Facebook 伦敦办公室的主管。Philip Su在当时的离职信中写了他在微软工作12年比较独到的一些体会，希望对在职场的读者们有一些启发。这封离职信写于2010年9月3日。</p>
+
+<!-- more -->
+
+
+<p>过去的 12 年里，我一直很喜欢在微软工作，但是今天是我在微软的最后一天。</p>
+
+<p>我一直是一个比较随意的人，所以我希望今天的信也一样是有个性的、有争议的、乐观的、凭感觉的，而可能没有让人读后很满意的答案。</p>
+
+<p>请不要在我的信里找连贯性，因为你是不会找到的。如果有内容冒犯了你，那你可能不太了解我，因为我经常会在无意中冒犯到别人，几乎已经成为了定律。</p>
+
+<p>谢谢所有的一切。</p>
+
+<p>上大学时，我从来没有想过在微软工作。但我 1997 年的时候在微软实习后，就对它一见钟情：免费的饮料、自己的办公室、奔腾 66&hellip; 一个程序员还能要求什么？几年后，我实习时的老板突然离职了。他电脑的硬盘当时发生了故障，丢失了几个月的工作。他说这是一个来自上天的征兆。我不知道他现在人在哪里，在做些什么事情。</p>
+
+<p>人们在拿到一个不好的业绩审查后总是会抱怨老板和上级不公平而且不客观。但是你不觉得，每个人对自己的评估其实是最不客观的吗？我有时会平和地告诉别人这一点，但是没有人信。</p>
+
+<p>不要不吃甜的东西。吃饭时先吃甜点。</p>
+
+<p>在处理人际关系是，我们应该运用奥卡姆剃刀原理，也就是对于别人的行为，找到最简单，最信任别人的解释。对那些爱搞办公室政治，勾心斗角的人敬而远之。</p>
+
+<p>大学里的教授评估往往会参考学生在那门课得到的成绩，因为学生的成绩与他对教授的评价有很明显的关系。我一般不会认真听一个业绩不好的人对他老板的吐槽，但是如果一个业绩好的人批评他的老板，我会洗耳恭听。</p>
+
+<p>让行动代表你。但是注意自己说的话，因为言语是有力量的。</p>
+
+<p>如果你不断做公司最需要的事情，你是一定会被重用的。有人说，不是的，人际关系和在人前表现自己更重要。我不明白，如果你持续做对公司意义很重大的事情，怎么可能不被别人注意到。我很讨厌程序员问我怎么才能在人前表现自己。他们也很讨厌我的答案“把事情做得更漂亮”，觉得我是在讽刺他们。</p>
+
+<p>做一个真诚的人。给别人建议时不要考虑自己的利益。我从没有说服过任何人加入我的团队，或者说服他们不要走，仅仅因为我需要他们。</p>
+
+<p>听人说话时尽量理解，讲话时尽量容易让别人理解。</p>
+
+<p>好的创意很多。伟大的创意常常会遭受嘲笑，除非你去实现它。不要光说，用行动来证明你的点子。在大学的一门创业课里，我讲了一个网上租看和邮寄电影光碟的点子，我当时把它起名叫“NetVideo”，所有人都觉得很荒唐。以前我讲这个故事是为了炫耀我当时多么有远见（指后来用相同点子起家的上市公司 Netflix），但是现在我讲这个故事是想告诉你，行动和执行是最重要的。</p>
+
+<p>你在微软最终的职位级别是什么？请不要说 CEO 或科技院士，因为我几乎可以保证你达不到。对自己能力更现实的认识会帮助你更准确找到目标，而且也会让你更加快乐。一位副总裁曾经告诉我, 他已经做到了他在微软能做的最高职位。这不是假谦虚，也不是抱怨。他对自己很自信，而且很有事业心。他只不过是对自己有很清楚的认识，而且懂得满足。不要放弃，也不要出卖自己。但是你要正确认识你自己。</p>
+
+<p>如果你只采用你赞同的反馈，那很有可能这些反馈从一开始就不是你需要的。真正有价值的反馈是那些你在一开始并不赞同的反馈。要不然，你怎么去发现你的盲点？</p>
+
+<p>有能力而且有流程的人永远会做得比有能力而没有流程的人更好。</p>
+
+<p>不要惧怕流程。惧怕没有能力的人控制流程。惧怕流程试图去弥补人们缺乏的能力。</p>
+
+<p>我管理过 150 人的开发团队。我估计 60% 的人觉得自己应该是排名在前 20%。我从来没有遇见过认为自己是排在最后 10% 的人。</p>
+
+<p>Mini 会怎么做？一个经理曾经很严肃的问我，我是不是 Mini-Microsoft。 等我离开微软后，你们就会知道了。（Mini-Microsoft 是一个写微软内情的匿名博客，在微软内部有很大影响力）</p>
+
+<p>在微软这么大的公司中，你一定能够找出职位比你高，但你认为能力却不如你的人。但是你不应该钻这个牛角尖，因为这只会让你气馁。你应该做的是找到和你级别差不多的，但是你很佩服的人。你能从他们身上学到什么？你有什么他们不具备的优点？</p>
+
+<p>一个人，要么有激情，要么没有。一个期望管理者把他工作变得更有趣的人是走不了多远的。</p>
+
+<p>有一次在必胜客，我看到所有签信用卡的笔上都插上了小花，放在一起的时候看起来像一束鲜花。我问服务员，这是必胜客的新政策吗？她说不是，是她自己弄的。你是不是也很想聘用这样的员工？</p>
+
+<p>愤世嫉俗的人是一事无成的。不要和第一反应总是质疑的人交流，你会吃不消的。</p>
+
+<p>我有一位同事，他在我 1998 年加入微软的时候已经在微软干了 15 年，应该有足够的钱来买一栋楼。但是他每天还是开一辆破旧的 Datsun 汽车来上班，来编程。说这不是他深爱的事业，会有谁信呢？</p>
+
+<p>去读 Tony Hsieh 的《Delivering Happiness》吧，它会改变你的一生。</p>
+
+<p>给我一位优秀的工程师，我会很乐意拿五个“还不错的”工程师跟你换。</p>
+
+<p>练习如何有说服力的表达你不同意的观点，如果你不这样做，你就会在心里暗骂与你“道不同”的人是蠢货一个。聪明人会明白为什么其他聪明的人有时会不同意。</p>
+
+<p>发生问题的时候，人们总是让管理人担当责任。你什么时候见过底下的工程师说过：“这是我的错，应该写在我的业绩审查里面。我会把它修好，或者辞职。”</p>
+
+<p>你最想加入的团队就是最难进的团队。</p>
+
+<p>如果你很容易就能够拿到公司对你许多很好的评价，可能这说明你进入了错误的团队。</p>
+
+<p>你还在坚持练习你的技术么？运动员天天训练，音乐家也会演练更难的曲章。你呢？</p>
+
+<p>有些新员工会问我获得职业成功的秘诀。当我告诉他们答案是“努力工作”时，他们通常会很失望。这听起来像陈腐的说教，还像是自夸。如果我的答案是“我之所以能够爬到中层管理岗位是因为我很善于给上级拍马屁”，他们也许会更满意。我来微软的第一年就带了个睡袋到办公室，而且经常加班，周末的时候，我也是在写代码，学习新技术。我会看团队管理和如何与人沟通的书籍。才智相当的人在职业生涯上会有不同的发展，主要是因为他们的付出有多有少。如果有人另有说法，那他可能是想向你“兜售”点什么。</p>
+
+<p>跟随杰出的人，为杰出的人工作。</p>
+
+<p>最重要的是：做人要诚信。你必须信任和你一起工作的人。罗斯福有一次开除了他的牧场主，因为那位牧场主偷了邻居的牛，然后把它们放到了罗斯福的牛群中。当他的朋友询问他为什么时，罗斯福回答 “为我偷东西的人，也会从我这里偷东西。”</p>
+
+<p>一位 PM 曾经评价过一位在会议上很具进攻性的副总裁，“我宁可让他从我这边往别人那里喷，而不是从别人那里往我这里喷。”听到的所有人都笑了。我更希望谁也别喷谁。</p>
+
+<p>康威定律（Conway’s Law）：“设计系统的组织，最终产生的设计等同于组织之内、之间的沟通结构。”</p>
+
+<p>永远不要发出组织的架构图。－Steven Sinofsky</p>
+
+<p>你可以通过三种方法控制你的结果：1. 控制人，你可以选择雇佣谁，解雇谁，把什么人放到什么位置上；2. 行为控制，你可以告诉他们该做什么；C. 结果控制，你告诉他们需要什么样的结果而度量标准是什么。你要知道什么时候适合用什么方法。</p>
+
+<p>当你被介绍认识同事的孩子或者配偶时，这种感觉是不是很好？在一瞬间，工作和生活之间的隔阂消失了，你会联想到篮球，音乐会，庆祝晚宴等。当我对同事不满意的时候，我就会用这些提醒自己。</p>
+
+<p>我喜欢看到有才能的人们做他们最擅长的事情，因为这能够很好的激励我。我在上海的一个胡同里面看到一个大厨把一个篮球大小的面团用手拉成了 8 个人吃的面条，而且整个过程都在一分钟内完成。我们每人都具有惊人的潜能。</p>
+
+<p>当我编写的 Dr. Who 网站（微软内部查询人的工具）受到了法律事务部的一些抗议时，有人把一个两英尺高的“Dalek”塑像放在我的办公室里，表示支持。我现在还不知道这是谁做的，但是如果你在读这封信，谢谢。</p>
+
+<p>交朋友不要考虑这个人对你有没有用。回复所有人的邮件，无论他是副总裁还是一名实习生。这条建议可能会降低你的效率，但你也应该这么做。</p>
+
+<p>我们以前经常会有免费的啤酒和吃的，基本每一个产品的大小里程碑都会有一次庆祝。我们为什么现在没有了？我知道答案，但是真的，为什么？省那点钱值得吗？现在的微软比从前更好了吗？</p>
+
+<p>有一天， 一个标贴出现在微软雷德蒙西区的冰箱上，它是这样写的：“你知道微软每年在饮料上要花费掉几百万美金吗？饮料是公司的，请不要带回家”。这使我非常郁闷的原因很多，简单说几个：</p>
+
+<p>有人闲到打印出这些标贴并且把它们贴到了冰箱上。
+有人在领工资干这件事情。
+有人认为员工带走几瓶饮料是值得微软去注意的问题。
+一个人能带走几瓶饮料呀？而一位微软人每小时的薪水和福利是多少？我们盈利来自于最大化我们能抓住的机会，而不是最小化我们的成本。我相信，做财务的人看到这段话会想揍我。相信我们赚钱的能力，把注意力放在赚钱上面，而不是省钱。</p>
+
+<p>带领和管理的艺术是让人们想去做你认为必须要做的事情。</p>
+
+<p>你在微软最开心的是什么时候？是什么让你这么开心？你怎样可以做得更好？</p>
+
+<p>如果中了彩票大奖，你会做什么？当中有什么是你现在就能动手做的呢？</p>
+
+<p>所有发生的一切都是从个人开始的。（事在人为。）</p>
+
+<p>VIA: <a href="http://worldofsu.com/philipsu/goodbye-microsoft-hello-facebook/">worldofsu.com</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[开发中心资源管理技术方案]]></title>
+    <link href="http://javame.tk/blog/2013/03/04/doc-referring-tech-solution/"/>
+    <updated>2013-03-04T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/03/04/doc-referring-tech-solution</id>
+    <content type="html"><![CDATA[<h2>需求背景</h2>
+
+<p>一些公用的脚本，不方便互相引用，浪费人力。考虑把开发中心的文档作为资源，用于文档间互相引用，或者被任务引用</p>
+
+<h2>交互设计</h2>
+
+<p>以文当中书写关键词的形式实现。格式如(rename重命名可选)：</p>
+
+<ol>
+<li><p>引用开发中心的文档</p>
+
+<blockquote><p>&mdash;download[doc://docId rename]</p></blockquote></li>
+<li><p>引用HDFS上的文件</p>
+
+<blockquote><p>&mdash;download[hdfs://hdfsPath rename]</p></blockquote></li>
+</ol>
+
+
+<h2>技术方案</h2>
+
+<ol>
+<li>对于ShellJob和HiveJob在JobUtil createJob的时候解析脚本中的资源定义，添加到资源文件列表中</li>
+<li>把要运行job的脚本中的资源定义暂时删除（不提交数据库）</li>
+<li>在前置处理单元DownloadJob中处理文档中直接定义的资源下载</li>
+<li>对于开发中心的job，创建WithProcesserJob，添加DownloadJob到前置任务</li>
+<li>在开发中心 文档标题中 显示文档ID</li>
+<li>在开发中心提供上传资源到HDFS的功能，上传成功后直接将资源引用代码插入文档第一行</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A trap when iterate on HashMap.entrySet()]]></title>
+    <link href="http://javame.tk/blog/2013/01/25/hashmap-entryset-tip/"/>
+    <updated>2013-01-25T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/01/25/hashmap-entryset-tip</id>
+    <content type="html"><![CDATA[<blockquote><p>If the map is modified while an iteration over the set is in progress (except through the iterator&rsquo;s own remove operation, or through the setValue operation on a map entry returned by the iterator) the results of the iteration are undefined.</p></blockquote>
+
+<h2>Wrong code：</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">sizeMap</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">xxx</span><span class="o">=</span><span class="n">xxx</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">sizeMap</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span><span class="c1">//这里删除会造成下载迭代时抛出java.util.ConcurrentModificationException异常</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Right code：</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;&gt;</span> <span class="n">itr</span> <span class="o">=</span> <span class="n">sizeMap</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">iterator</span><span class="o">();</span><span class="n">itr</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">=</span> <span class="n">itr</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">xxx</span><span class="o">=</span><span class="n">xxx</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">itr</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello Blog on Github]]></title>
+    <link href="http://javame.tk/blog/2012/07/31/hello-blog-on-github/"/>
+    <updated>2012-07-31T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2012/07/31/hello-blog-on-github</id>
+    <content type="html"><![CDATA[<h1>Hello World!</h1>
+
+<h2>Nihao!</h2>
+
+<p>Come on!</p>
+
+<div>
+  <pre><code class='java'>package com.github.abop
+
+public class MyClass{
+    public int main(){
+        return null;
+    }
+}</code></pre>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Basic linux shell commond (include vim)]]></title>
+    <link href="http://javame.tk/blog/2012/07/31/basic-linux-shell-commond-include-vim/"/>
+    <updated>2012-07-31T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2012/07/31/basic-linux-shell-commond-include-vim</id>
+    <content type="html"><![CDATA[<h2>linux</h2>
+
+<ul>
+<li>执行命令后面加 &amp; ， 可以让任务后台运行</li>
+<li>jobs查看当前任务</li>
+<li>fg jobnumber切换某任务到前台</li>
+<li>普通任务执行时ctrl+z挂起到后台，但任务会暂停</li>
+<li>bg jobnumber让挂起任务运行</li>
+<li>fg 切换到前台</li>
+</ul>
+
+
+<p>====</p>
+
+<h2>vim</h2>
+
+<ul>
+<li>ctrl+L refresh screen buffer</li>
+<li>:split 分栏</li>
+<li>ctrl+ 方向键 切换分栏</li>
+<li>:e 打开文件</li>
+<li>:ls 查看当前打开的buffer（文件）</li>
+<li>:b num 切换文件（其中num为buffer list中的编号）</li>
+<li>:bn &mdash; next buffer in the buffer list</li>
+<li>:bp &mdash; previous buffer in the buffer list</li>
+<li>:b# &mdash; previous buffer you was in</li>
+<li>gg=G格式化文件（&#8221;start=end&#8221;）</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Maven, Webx, Velocity 学习总结]]></title>
+    <link href="http://javame.tk/blog/2011/07/24/maven-webx-velociry-note/"/>
+    <updated>2011-07-24T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2011/07/24/maven-webx-velociry-note</id>
+    <content type="html"><![CDATA[<ul>
+<li><a href="#overview">综述</a></li>
+<li><a href="#maven">Maven</a>
+
+<ul>
+<li><a href="#maven_basics">Maven基础</a></li>
+<li><a href="#pom">POM基础</a></li>
+<li><a href="#dependency">依赖管理</a></li>
+</ul>
+</li>
+<li><a href="#webx">Webx</a>
+
+<ul>
+<li><a href="#one_m_webx">一分钟Webx框架开发</a>
+
+<ul>
+<li><a href="#turbine">处理页面的基本流程（Turbine）</a></li>
+<li><a href="#layer">Webx各层我们要做的工作的工作</a></li>
+</ul>
+</li>
+<li><a href="#webx_platform">Webx框架初探</a>
+
+<ul>
+<li><a href="#webx_basics">Webx的基本概念</a></li>
+<li><a href="#webx_dir_structure">Webx项目目录结构</a></li>
+<li><a href="#webx_start_process">Webx应用启动流程</a></li>
+<li><a href="#webx_request_handdling">Webx响应和处理请求的流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#velocity">Velocity</a></li>
+<li><a href="#ibatis">Ibatis</a>
+
+<ul>
+<li><a href="#ibatis_use">Ibatis的作用</a></li>
+<li><a href="#ibatis_config">Ibatis的配置</a></li>
+</ul>
+</li>
+<li><a href="#ref">参考资料</a></li>
+</ul>
+
+
+<!-- more -->
+
+
+
+
+<h2 id="overview">综述</h2>
+
+
+<p>这两周的时间，通过看指南，看代码，跑实例，对淘宝网web应用开发框架有了一个整体的初步认识，主要包括四个方面：</p>
+
+<ol>
+<li><p>项目管理工具Maven</p></li>
+<li><p>MVC框架Webx。</p></li>
+<li><p>Webx中的View层实现——Velocity</p></li>
+<li><p>Webx中的Model持久层实现——Ibatis</p></li>
+</ol>
+
+
+<h2 id="maven">Maven</h2>
+
+
+
+
+<h3 id="maven_basics">Maven基础</h3>
+
+
+<ol>
+<li><p>坐标是指项目的唯一标识，以GAV（groupId，artifactId和version）区分， groupId包含公司和内部组（或产品线）的信息，如com.taobao.mercury，表示taobao.com下的mercury项目组；ArtifactId则表示项目的名称，如mercury-web，Version则表示某一Artifact的版本，如1.0-SNAPSHOT</p></li>
+<li><p>依赖是指项目所依赖的相关jar包</p></li>
+<li><p>仓库是指存放项目的产出（Artifact）的仓库，如<a href="http://mvnrepo.taobao.ali.com/mvn/repository">http://mvnrepo.taobao.ali.com/mvn/repository</a></p></li>
+<li><p>插件是Maven的设计机制，Maven包含一个核心功能组件，而扩展功能都是通过插件完成，即使我们最常见的编译功能也是通过compiler插件完成的。</p></li>
+</ol>
+
+
+<h3 id="pom">POM基础</h3>
+
+
+<p>一个pom.xml文件包含以下基本信息：modelVersion, groupId, artifactId, version, packaging, name, description, url, licenses, scm, connection, developers</p>
+
+<h3 id="dependency">依赖管理</h3>
+
+
+<ol>
+<li><p>依赖定义具体到version</p></li>
+<li><p>依赖可以传递</p></li>
+<li><p>&lt;scope>标签定义依赖项的生效范围</p></li>
+<li><p>依赖的版本定义在父pom（项目pom）中，子pom（模块pom）设置&lt;parent>，继承父pom</p>
+
+<p> <img src="http://javame.tk/images/pom.jpg" alt="pom" /></p></li>
+<li><p>设置一个虚拟的总项目，多个实际项目作为总项目的模块</p></li>
+</ol>
+
+
+<h2 id="webx">Webx</h2>
+
+
+
+
+<h3 id="one_m_webx">一分钟Webx框架开发</h3>
+
+
+
+
+<h4 id="turbine">理页面的基本流程（Turbine）</h4>
+
+
+<p>Webx是采用MVC三层架构。请求的上下文信息（RequestContext、ServletContext、HttpServletRequest、HttpServletResponse）被封装为RunData对象。在Web层和Biz层之间采用command模式实现对请求的处理。由MappingRuleService将请求分发到同名的业务处理类进行处理，处理结果被封装为Result对象。然后按照业务逻辑将所需信息放到TemplateContext中，由velocity取得并对VM模板进行渲染。最后产出的页面输出给用户。</p>
+
+<p>有的请求并不要求返回页面，只需处理业务逻辑。</p>
+
+<p>整个处理流程的控制由Pipeline（水管）中配置各种Valve（阀门）实现，简易的流程图如下：</p>
+
+<p><img src="http://javame.tk/images/req_process.gif" alt="pipeline" /></p>
+
+<h4 id="layer">Webx各层我们要做的工作的工作</h4>
+
+
+<ul>
+<li><p>V层(Web)：采用Velocity书写vm模版，书写一个同名的Java类来接收Command，并处理业务逻辑（void execute(RunData,TemplateContext)），并根据处理得到的结果(Result对象)，准备好vm模版中所需要的数据（TemplateContext.put(String key, Object value)）。</p></li>
+<li><p>C层(Biz)：书写AO对象处理Command，请求的上下文信息被封装在RunData对象中。AO中只包含简单的逻辑处理，真正的业务处理通常书写在Manager中。</p></li>
+<li><p>M层(ibatis)：书写DAO对象负责和数据交互，持久层使用的是Ibatis。需要我们来建立数据物理模型并书写数据库操作的SQL语句。</p></li>
+</ul>
+
+
+<h3 id="webx_platform">Webx框架初探</h3>
+
+
+
+
+<h4 id="webx_basics">Webx的基本概念</h4>
+
+
+<ol>
+<li><p>页面驱动：以页面（view）为主导，先写页面，再写和页面配套的程序模块，通过规则，查找页面所对应的程序模块</p></li>
+<li><p>Pull Tools：有一些定义在webx.xml中，另一些默认定义在框架中。这些tools可以再vm模板中被直接引用。Global作用域的tool在系统初始化时创建，Request作用域的tool在每次HTTP请求时创建。</p></li>
+<li><p>Modules：turbine中的基本编程模块。Screen用来处理页面显示逻辑；Control和screen类似，但可以被别的screen或layout引用；Action处理用户提交表单。所有module都实现Module接口：public interface Module {void execute(RunData rundata) throws WebxException;}</p></li>
+</ol>
+
+
+<h4 id="webx_dir_structure">Webx项目目录结构</h4>
+
+
+<pre><code>mercury  
+├─assets
+├─biz
+│ ├─src  
+│ │ ├─main.java.com.taobao
+│ │ │ │ └─mercury
+│ │ │ │ ├─amend
+│ │ │ │ ├─ao
+│ │ │ │ │ ├─correct
+│ │ │ │ │ │ └─impl
+│ │ │ │ │ └─impl
+│ │ │ │ ├─aop
+│ │ │ │ ├─biz
+│ │ │ │ │ ├─domain
+│ │ │ │ │ │ ├─mysqlmap
+│ │ │ │ │ │ ├─oracle
+│ │ │ │ │ │ ├─rowkey
+│ │ │ │ │ │ └─sajiao
+│ │ │ │ │ └─util
+│ │ │ │ ├─cache
+│ │ │ │ ├─dal
+│ │ │ │ │ └─sajiao
+│ │ │ │ ├─mananger
+│ │ │ │ │ └─sajiao
+│ │ │ │ ├─notify
+│ │ │ │ ├─ob
+│ │ │ │ │ ├─ao
+│ │ │ │ │ ├─dal
+│ │ │ │ │ └─mananger
+│ │ │ │ ├─query
+│ │ │ │ └─timetask
+│ │ │ └─resources
+│ │ └─test
+│ └─target
+├─deploy
+├─protocal
+│ ├─.settings
+│ ├─src
+│ │ ├─main.java.com.taobao
+│ │ │ ├─common
+│ │ │ │─mercury
+│ │ │ │ ├─domain
+│ │ │ │ └─util
+│ │ │ └─partition
+│ │ └─test
+│ └─target
+└─web
+   ├─.settings
+   ├─src
+   │ ├─main
+   │ │ ├─assembly
+   │ │ ├─filter
+   │ │ ├─java.com.taobao.mercury.web
+   │ │ │ ├─common
+   │ │ │ │ ├─service
+   │ │ │ │ ├─session
+   │ │ │ │ ├─util
+   │ │ │ │ └─valve
+   │ │ │ └─module
+   │ │ │ ├─action
+   │ │ │ ├─control
+   │ │ │ └─screen
+   │ │ ├─resources
+   │ │ │ ├─biz
+   │ │ │ │ ├─bean
+   │ │ │ │ └─persistence
+   │ │ │ └─top
+   │ │ │ └─config
+   │ │ └─webapp
+   │ │ ├─common
+   │ │ │ └─templates
+   │ │ │ └─screen
+   │ │ ├─default
+   │ │ │ └─templates
+   │ │ │ ├─control
+   │ │ │ ├─layout
+   │ │ │ └─screen
+   │ │ ├─META-INF
+   │ │ └─WEB-INF
+   │ │ ├─common
+   │ │ └─default
+   │ └─test.java.com.taobao.mercury
+   └─target
+</code></pre>
+
+<h4 id="webx_start_process">Webx应用启动流程</h4>
+
+
+<p>Webapp\WEB-INF\web.xml是SpringExt的配置文件，下面是mercury-web中的样本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;GB2312&quot;?&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;web-app</span> <span class="na">version=</span><span class="s">&quot;2.4&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/j2ee&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;context-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-name&gt;</span>loggingRoot<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-value&gt;</span>${mercury.loggingRoot}<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/context-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'>......
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;listener&gt;&lt;listener-class&gt;</span>com.alibaba.citrus.logconfig.LogConfiguratorListener<span class="nt">&lt;/listener-class&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/listener&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">&lt;!-- ???/WEB-INF/webx.xml, /WEB-INF/webx-*.xml --&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;listener&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;listener-class&gt;</span>com.alibaba.citrus.webx.context.WebxContextLoaderListener<span class="nt">&lt;/listener-class&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/listener&gt;</span>
+</span><span class='line'>
+</span><span class='line'>......
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>sessionFilter<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-class&gt;</span>com.taobao.session.TaobaoSessionFilter<span class="nt">&lt;/filter-class&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;init-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-name&gt;</span>tbsessionConfigGroup<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-value&gt;</span>${mercury.session.filter.group.name}<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/init-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;init-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-name&gt;</span>isloginSessionCheck<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-value&gt;</span>true<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/init-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>sessionFilter<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;url-pattern&gt;</span>*.htm<span class="nt">&lt;/url-pattern&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'>......
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>timer<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-class&gt;</span>com.alibaba.webx.filter.timer.TimerFilter<span class="nt">&lt;/filter-class&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;init-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-name&gt;</span>threshold<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;param-value&gt;</span>${mercury.timer.threshold}<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/init-param&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>timer<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>webx<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-class&gt;</span>com.alibaba.citrus.webx.servlet.WebxFrameworkFilter<span class="nt">&lt;/filter-class&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>mdc<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-class&gt;</span>com.alibaba.citrus.webx.servlet.SetLoggingContextFilter<span class="nt">&lt;/filter-class&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>mdc<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;filter-name&gt;</span>webx<span class="nt">&lt;/filter-name&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/filter-mapping&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;welcome-file-list&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;welcome-file&gt;</span>index.html<span class="nt">&lt;/welcome-file&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;welcome-file&gt;</span>index.jsp<span class="nt">&lt;/welcome-file&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/welcome-file-list&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">&lt;!-- ====================================================== --&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">&lt;!-- error pages --&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">&lt;!-- ====================================================== --&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;error-page&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;error-code&gt;</span>400<span class="nt">&lt;/error-code&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;location&gt;</span>/error.html<span class="nt">&lt;/location&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/error-page&gt;</span>
+</span><span class='line'>
+</span><span class='line'>......
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/web-app&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一个Webx应用的启动流程如下：</p>
+
+<ol>
+<li><p>初始化context-param</p></li>
+<li><p>执行各个listener，其中WebxContextLoaderListener初始化被Webx包装过的XmlWebApplicationContext（spring容器）及各个子容器，各种webx.xml里定义beans（包括&lt;service>标签定义的服务）都被装载。</p></li>
+<li><p>加载各个filter：其中TimerFilter（timer）用来记录serverlet执行时间，WebxFrameworkFilter（webx）用来处理web请求，SetLoggingContextFilter（mdc）用来通过SLF4J MDC来记录用户和请求的信息。三者顺序为timer->webx->mdc。</p></li>
+</ol>
+
+
+<blockquote><p><a href="http://ajava.org/readbook/J2EE/servletjsphxbc2/17212.html">web.xml中各种元素的含义</a></p></blockquote>
+
+<h4 id="webx_request_handdling">Webx响应和处理请求的流程</h4>
+
+
+<p>（VIA: <a href="http://openwebx.org/docs/webxframework.html#d0e1895">Webx框架指南</a>）</p>
+
+<p>当一个HTTP请求到达时，首先由WebxFrameworkFilter接手这个请求（参考Webx应用启动流程），下图是WebxFrameworkFilter处理一个WEB请求的过程：</p>
+
+<p><img src="http://javame.tk/images/webx_req_process.jpg" alt="webxProcess" /></p>
+
+<p>如图所示，WebxFrameworkFilter接到请求以后，就会调用WebxRootController。从这里开始，进入Spring的世界。此后所有的对象：WebxRootController、WebxController、RequestContext、Pipeline等，全部是通过SpringExt配置在Spring Context中的。</p>
+
+<p>WebxRootController对象存在于root context中，它被所有子应用所共享。它会创建RequestContext实例，从而增强request、response、session的功能。接下来，WebxController对象会被调用。</p>
+
+<p>WebxController对象是由每个子应用独享的，子应用app1和app2可以有不同的WebxController实现。默认的实现，会调用pipeline。</p>
+
+<p>Pipeline也是由各子应用自己来配置的。假如pipeline碰到无法处理的请求，如静态页面、图片等，pipeline应当执行&lt;exit/> valve强制退出。然后WebxRootController就会“放弃控制”，这意味着request将被返还给/WEB-INF/web.xml中定义的servlet、filter或者返还给servlet engine本身来处理。</p>
+
+<p>webapp\common\pipeline.xml配置了mercury-web的PipeLine：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;beans:beans</span> <span class="na">xmlns:services=</span><span class="s">&quot;http://www.alibaba.com/schema/services&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">......</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://www.alibaba.com/schema/services</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">...... &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;services:pipeline</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">xmlns=</span><span class="s">&quot;http://www.alibaba.com/schema/services/pipeline/valves&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;prepareForTurbine</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;prepareForWebx2/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pl-valves:try-catch-finally&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pl-valves:try&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.alibaba.turbine.pipeline.SetLoggingContextValve&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.taobao.mercury.web.common.valve.DefaultAnalyzeURLValve&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">class=</span><span class="s">&quot;com.taobao.mercury.web.common.valve.SecurityCheckValve&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.taobao.mercury.web.common.valve.SessionValve&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.taobao.common.pagecache.webx.PageCacheValve&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">p:action=</span><span class="s">&quot;start&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;loop&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;choose&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;when&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pl-conditions:target-extension-condition</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">extension=</span><span class="s">&quot;vm, jsp&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;performAction</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;performTemplateScreen</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;renderTemplate</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/when&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;when&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pl-conditions:target-extension-condition</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">extension=</span><span class="s">&quot;do&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;performAction</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;performScreen</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/when&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;otherwise&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;exit</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/otherwise&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/choose&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;breakUnlessTargetRedirected</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/loop&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/pl-valves:try&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pl-valves:finally&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.taobao.common.pagecache.webx.PageCacheValve&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">p:action=</span><span class="s">&quot;end&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.taobao.mercury.web.common.valve.SessionValve&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">p:action=</span><span class="s">&quot;clean&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;webx2-valve</span> <span class="na">class=</span><span class="s">&quot;com.alibaba.turbine.pipeline.SetLoggingContextValve&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">p:action=</span><span class="s">&quot;cleanup&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/pl-valves:finally&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/pl-valves:try-catch-finally&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/services:pipeline&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/beans:beans&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>假设用户以URL：<a href="http://favorite.daily.taobao.net/collect_list.htm">http://favorite.daily.taobao.net/collect_list.htm</a> 来访问Webx应用。WebxFrameworkFilter接收请求，并且一路顺利到达pipeline。然后Pipeline开始依次执行它的valves（下面的描述略过一些相对次要的步骤）：</p>
+
+<ol>
+<li><p>&lt;analyzeURL> &ndash; 分析URL</p>
+
+<p> 分析URL的目的是取得target，这里取得的target是collect_list.htm。如果用户访问的URL中并没有提供path信息，通常被理解为：用户想要访问“主页”。AnalyzeURL valve提供了一个可选的参数“homepage”，即是在这种情况下起作用。得到的target为“homepage”。</p>
+
+<p> 需要注意的是，target不代表模板名，也不代表类名。Target只是一个抽象的概念 —— 当前页面需要达成的目标。Target可能被后续的valves解释成模板名、类名或者其它东西。</p></li>
+<li><p>进入&lt;choose> &ndash; 多重分支</p>
+
+<p> 很明显，“collect_list.htm”满足了第一个&lt;when>所附带的条件：&lt;target-extension-condition extension=&ldquo; vm, jsp&rdquo;>，意思是target的后缀为“jsp”或为“vm”。</p></li>
+<li><p>&lt;performAction> &ndash; 执行action</p>
+
+<p> 和其它框架中的action概念不同，在Webx Turbine中，action是用来处理用户提交的表单的。因为本次请求未提供action参数，所以跳过该步骤。</p></li>
+<li><p>&lt;performTemplateScreen> &ndash; 查找并执行screen。</p>
+
+<p> 如果target-extension为”do”，则没有&lt;performTemplateScreen>这个valve。</p>
+
+<p> 这里要用到一个规则：target映射成screen module类名的规则。</p>
+
+<p> 假设target为xxx/yyy/zzz，那么Webx Turbine会依次查找下面的screen模块：</p>
+
+<blockquote><ol>
+<li><p>screen.xxx.yyy.Zzz，</p></li>
+<li><p>screen.xxx.yyy.Default，</p></li>
+<li><p>screen.xxx.Default，</p></li>
+<li><p>screen.Default。</p></li>
+</ol>
+</blockquote>
+
+<p> 本次请求的target为collection_list.htm，因此它会尝试查找screen.collection_list类。</p>
+
+<p> 如果找到screen类，Webx Turbine就会执行它。Screen类的功能，通常是读取数据库，然后把模板所需要的对象放到TemplateContext中。</p>
+
+<p> 如果找不到，也没关系 —— 这就是“页面优先”：一些页面没有业务逻辑，因此不需要screen类，只需要有模板就可以了。</p></li>
+<li><p>&lt;renderTemplate> &ndash; 渲染模板</p>
+
+<p> 这里用到两个规则：target映射成screen template，以及target映射成layout template。</p>
+
+<p> 假设target为xxx/yyy/zzz，那么Webx Turbine会查找下面的screen模板：/templates/screen/xxx/yyy/zzz。Screen模板如果未找到，就会报404 Not Found错误。找到screen模板以后，Webx Turbine还会试着查找下面的layout模板：</p>
+
+<blockquote><ol>
+<li><p>/templates/layout/xxx/yyy/zzz</p></li>
+<li><p>/templates/layout/xxx/yyy/default</p></li>
+<li><p>/templates/layout/xxx/default</p></li>
+<li><p>/templates/layout/default</p></li>
+</ol>
+</blockquote>
+
+<p> Layout模板如果找不到，就直接渲染screen模板；如果存在，则把渲染screen模板后的结果，嵌入到layout模板中。</p>
+
+<p>Layout模板和screen模板中，都可以调用control。每个页面只有一个screen，却可以有任意多个controls。</p></li>
+<li><p>&lt;breakUnlessTargetRedirected> &ndash; 内部重定向</p>
+
+<p> 在screen和action中，可以进行“内部重定向”。内部重定向实质上就是由&lt;breakUnlessTargetRedirected>实施的 —— 如果没有重定向标记，就退出；否则循环到&lt;loop>标签。</p>
+
+<p> 和外部重定向不同，外部重定向是向浏览器返回一个302或303 response，其中包含Location header，浏览器看到这样的response以后，就会发出第二个请求。而内部重定向发生在pipeline内部，浏览器并不了解内部重定向。</p></li>
+</ol>
+
+
+<h2 id="velocity">Velocity部分</h2>
+
+
+<p>尚未系统学习，只是看代码做了一些了解。</p>
+
+<ol>
+<li><p>模板以.vm为后缀名</p></li>
+<li><p>$a：美元符“$”加上java中的引用名。可以引用的对象包括内置的对象，pull Service中pull到的对象，业务处理中put进TemplateContext中的对象</p></li>
+<li><p>#set($a = $b)：声明变量并赋值；</p></li>
+<li><p>##：velocity行注释</p></li>
+<li><p>#if #elseif #else判断选择，最后用#end闭合</p></li>
+</ol>
+
+
+<h2 id="ibatis">Ibatis部分</h2>
+
+
+
+
+<h3 id="ibatis_use">Ibatis的作用</h3>
+
+
+<p>Ibatis将数据库中的数据转换为java中的对象，方便C层对数据进行操作</p>
+
+<h3 id="ibatis_config">Ibatis的配置</h3>
+
+
+<ol>
+<li><p>属性文件*-persistence.xml</p></li>
+<li><p>总配置文件SqlMap-Config.xml</p></li>
+<li><p>映射文件collection_item_mapping.xml</p></li>
+</ol>
+
+
+<h2 id="ref">参考资料</h2>
+
+]]></content>
+  </entry>
+  
+</feed>

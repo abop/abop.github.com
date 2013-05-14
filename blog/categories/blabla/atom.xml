@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: blabla | Goofy's Blog]]></title>
+  <link href="http://javame.tk/blog/categories/blabla/atom.xml" rel="self"/>
+  <link href="http://javame.tk/"/>
+  <updated>2013-05-14T17:29:22+08:00</updated>
+  <id>http://javame.tk/</id>
+  <author>
+    <name><![CDATA[Goofy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hello Blog on Github]]></title>
+    <link href="http://javame.tk/blog/2012/07/31/hello-blog-on-github/"/>
+    <updated>2012-07-31T00:00:00+08:00</updated>
+    <id>http://javame.tk/blog/2012/07/31/hello-blog-on-github</id>
+    <content type="html"><![CDATA[<h1>Hello World!</h1>
+
+<h2>Nihao!</h2>
+
+<p>Come on!
+<div>
+  <pre><code class='java'>package com.github.abop&lt;/p&gt;
+
+&lt;p&gt;public class MyClass{&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public int main(){
+    return null;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}</code></pre>
+</div>
+</p>
+]]></content>
+  </entry>
+  
+</feed>
