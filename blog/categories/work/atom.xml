@@ -4,7 +4,7 @@
   <title><![CDATA[Category: work | Goofy's Blog]]></title>
   <link href="http://javame.tk/blog/categories/work/atom.xml" rel="self"/>
   <link href="http://javame.tk/"/>
-  <updated>2013-05-14T17:58:13+08:00</updated>
+  <updated>2013-05-14T18:08:52+08:00</updated>
   <id>http://javame.tk/</id>
   <author>
     <name><![CDATA[Goofy]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<h2>需求背景</h2>
 
 <p>一些公用的脚本，不方便互相引用，浪费人力。考虑把开发中心的文档作为资源，用于文档间互相引用，或者被任务引用</p>
+
+<!--more-->
+
 
 <h2>交互设计</h2>
 

@@ -9,7 +9,7 @@
   <meta name="author" content="Goofy">
 
   
-  <meta name="description" content="VIA:(http://blog.csdn.net/linwhwylb/article/details/7184748) 在使用sed对日志或者其它文本进行parse的过程当中，有时候我们需要引用外部变量的值， 或者获取一个shell命令执行的结果，以便达到更加可观的输出结果。这里介绍如何做到。 &hellip;">
+  <meta name="description" content="VIA:(http://blog.csdn.net/linwhwylb/article/details/7184748) 在使用sed对日志或者其它文本进行parse的过程当中，有时候我们需要引用外部变量的值， 或者获取一个shell命令执行的结果，以便达到更加可观的输出结果。这里介绍如何做到。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,86 +112,12 @@
 
 <p>或者获取一个shell命令执行的结果，以便达到更加可观的输出结果。这里介绍如何做到。</p>
 
-<h2>sed中使用变量替换</h2>
-
-<ol><li>
-sed命令使用双引号的情况下，使用$var直接引用
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s2">&quot;s/^/$RANDOM.rmvb_/g&quot;</span>
-</span><span class='line'>29328.rmvb_
-</span><span class='line'><span class="c"># 上面例子引用了一个环境变量$RANDOM的值</span>
-</span></code></pre></td></tr></table></div></figure>
-</li>
-<li>
-sed命令使用单引号的情况下，使用&#8217;&#8221;$var&#8221;&#8217;引用
-
-类似，我们可以看到
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="s2">&quot;$RANDOM&quot;</span><span class="s1">&#39;.rmvb_/g&#39;</span>
-</span><span class='line'>31338.rmvb_
-</span></code></pre></td></tr></table></div></figure>
-</li></ol>
-
-
-<h2>sed中执行外部命令</h2>
-
-<ol><li>
-sed命令使用单引号的情况下使用&#8217;`shell command`&#8217;或者&#8217;$(shell command)&#8217;引用命令执行的结果
-
-还是以上面案例分析，例子如下
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$RANDOM</span><span class="sb">`</span><span class="s1">&#39;.rmvb_/g&#39;</span>
-</span><span class='line'>8063.rmvb_
-</span><span class='line'><span class="c"># 上面的例子使用了旧式的命令替换，也可以采用新式的命令替换方法，如下</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$RANDOM</span><span class="k">)</span><span class="s1">&#39;.rmvb_/g&#39;</span>
-</span><span class='line'>18554.rmvb_
-</span><span class='line'><span class="c"># 下面例子取用当前日期作为结果的一部分，如下</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s1">&#39;s/^/&#39;</span><span class="k">$(</span>date +<span class="s2">&quot;%Y%m%d&quot;</span><span class="k">)</span><span class="s1">&#39;.rmvb_/g&#39;</span>
-</span><span class='line'>20120108.rmvb_
-</span></code></pre></td></tr></table></div></figure>
-</li>
-
-<li>sed命令使用双引号的情况下直接`shell command`或者$(shell command)引用命令执行的结果
-类似的，双引号的情况，如下
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s2">&quot;s/^/$(date +&quot;</span>%Y%m%d<span class="s2">&quot;).rmvb_/g&quot;</span>
-</span><span class='line'>20120108.rmvb_
-</span><span class='line'><span class="c"># 使用环境变量$RANDOM以及旧式命令替换的例子</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span>|sed <span class="s2">&quot;s/^/`echo $RANDOM`.rmvb_/g&quot;</span>
-</span><span class='line'>4988.rmvb_
-</span></code></pre></td></tr></table></div></figure>
-</li></ol>
-
-
-<h2>总结</h2>
-
-<p>在sed语句里面，变量替换或者执行shell命令，双引号比单引号少绕一些弯子</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/13/using-variables-and-shell-commands-in-sed/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -251,7 +177,7 @@ sed命令使用单引号的情况下使用&#8217;`shell command`&#8217;或者&#8
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/03/21/enter-special-char-in-linux-/">How to Enter Special Characters in Ubuntu(Linux)</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/03/21/enter-special-char-in-linux/">How to Enter Special Characters in Ubuntu(Linux)</a></h1>
     
     
       <p class="meta">
@@ -274,8 +200,9 @@ sed命令使用单引号的情况下使用&#8217;`shell command`&#8217;或者&#8
   </header>
 
 
-  <div class="entry-content"><pre><code>To enter a character by its code point, hold down Ctrl and Shift, type u followed by the four-character code point, then release Ctrl and Shift. If you often use characters that you can't easily access with other methods, you might find it useful to memorize the code point for those characters so you can enter them quickly.
-</code></pre>
+  <div class="entry-content"><blockquote><p>To enter a character by its code point, hold down <code>Ctrl</code> and <code>Shift</code>, type <code>u</code> followed by the four-character code point,
+then release <code>Ctrl</code> and <code>Shift</code>. If you often use characters that you can&rsquo;t easily access with other methods, you might find
+ it useful to memorize the code point for those characters so you can enter them quickly.</p></blockquote>
 
 <p>Ref: <a href="https://help.ubuntu.com/lts/ubuntu-help/tips-specialchars.html#ctrlshiftu">Ubuntu Documentation</a></p>
 </div>
@@ -404,33 +331,12 @@ sed命令使用单引号的情况下使用&#8217;`shell command`&#8217;或者&#8
 
 <p>一些公用的脚本，不方便互相引用，浪费人力。考虑把开发中心的文档作为资源，用于文档间互相引用，或者被任务引用</p>
 
-<h2>交互设计</h2>
-
-<p>以文当中书写关键词的形式实现。格式如(rename重命名可选)：</p>
-
-<ol>
-<li><p>引用开发中心的文档</p>
-
-<blockquote><p>&mdash;download[doc://docId rename]</p></blockquote></li>
-<li><p>引用HDFS上的文件</p>
-
-<blockquote><p>&mdash;download[hdfs://hdfsPath rename]</p></blockquote></li>
-</ol>
-
-
-<h2>技术方案</h2>
-
-<ol>
-<li>对于ShellJob和HiveJob在JobUtil createJob的时候解析脚本中的资源定义，添加到资源文件列表中</li>
-<li>把要运行job的脚本中的资源定义暂时删除（不提交数据库）</li>
-<li>在前置处理单元DownloadJob中处理文档中直接定义的资源下载</li>
-<li>对于开发中心的job，创建WithProcesserJob，添加DownloadJob到前置任务</li>
-<li>在开发中心 文档标题中 显示文档ID</li>
-<li>在开发中心提供上传资源到HDFS的功能，上传成功后直接将资源引用代码插入文档第一行</li>
-</ol>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/04/doc-referring-tech-solution/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -724,7 +630,6 @@ public class MyClass{
     ></iframe>
 </section>
 
-
 <section>
     <h1>分享</h1>
 <!-- JiaThis Button BEGIN -->
@@ -764,7 +669,6 @@ var jiathis_config={
 </style>
 <!-- JiaThis Button END -->
 </section>
-
 <section>
     <h1>Categories</h1>
     <ul id="categories">
@@ -792,7 +696,7 @@ var jiathis_config={
       </li>
     
       <li class="post">
-        <a href="/blog/2013/03/21/enter-special-char-in-linux-/">How to Enter Special Characters in Ubuntu(Linux)</a>
+        <a href="/blog/2013/03/21/enter-special-char-in-linux/">How to Enter Special Characters in Ubuntu(Linux)</a>
       </li>
     
       <li class="post">

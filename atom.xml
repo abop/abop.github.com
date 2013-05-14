@@ -4,7 +4,7 @@
   <title><![CDATA[Goofy's Blog]]></title>
   <link href="http://javame.tk/atom.xml" rel="self"/>
   <link href="http://javame.tk/"/>
-  <updated>2013-05-14T17:58:13+08:00</updated>
+  <updated>2013-05-14T18:08:52+08:00</updated>
   <id>http://javame.tk/</id>
   <author>
     <name><![CDATA[Goofy]]></name>
@@ -23,6 +23,9 @@
 <p>在使用sed对日志或者其它文本进行parse的过程当中，有时候我们需要引用外部变量的值，</p>
 
 <p>或者获取一个shell命令执行的结果，以便达到更加可观的输出结果。这里介绍如何做到。</p>
+
+<!--more-->
+
 
 <h2>sed中使用变量替换</h2>
 
@@ -220,11 +223,12 @@ Volatile fields are special fields which are used for communicating state betwee
   
   <entry>
     <title type="html"><![CDATA[How to Enter Special Characters in Ubuntu(Linux)]]></title>
-    <link href="http://javame.tk/blog/2013/03/21/enter-special-char-in-linux-/"/>
+    <link href="http://javame.tk/blog/2013/03/21/enter-special-char-in-linux/"/>
     <updated>2013-03-21T00:00:00+08:00</updated>
-    <id>http://javame.tk/blog/2013/03/21/enter-special-char-in-linux-</id>
-    <content type="html"><![CDATA[<pre><code>To enter a character by its code point, hold down Ctrl and Shift, type u followed by the four-character code point, then release Ctrl and Shift. If you often use characters that you can't easily access with other methods, you might find it useful to memorize the code point for those characters so you can enter them quickly.
-</code></pre>
+    <id>http://javame.tk/blog/2013/03/21/enter-special-char-in-linux</id>
+    <content type="html"><![CDATA[<blockquote><p>To enter a character by its code point, hold down <code>Ctrl</code> and <code>Shift</code>, type <code>u</code> followed by the four-character code point,
+then release <code>Ctrl</code> and <code>Shift</code>. If you often use characters that you can&rsquo;t easily access with other methods, you might find
+ it useful to memorize the code point for those characters so you can enter them quickly.</p></blockquote>
 
 <p>Ref: <a href="https://help.ubuntu.com/lts/ubuntu-help/tips-specialchars.html#ctrlshiftu">Ubuntu Documentation</a></p>
 ]]></content>
@@ -374,6 +378,9 @@ Volatile fields are special fields which are used for communicating state betwee
     <content type="html"><![CDATA[<h2>需求背景</h2>
 
 <p>一些公用的脚本，不方便互相引用，浪费人力。考虑把开发中心的文档作为资源，用于文档间互相引用，或者被任务引用</p>
+
+<!--more-->
+
 
 <h2>交互设计</h2>
 
