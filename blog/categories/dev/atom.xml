@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Dev | Goofy's Blog]]></title>
   <link href="http://javame.tk/blog/categories/dev/atom.xml" rel="self"/>
   <link href="http://javame.tk/"/>
-  <updated>2013-05-14T18:08:52+08:00</updated>
+  <updated>2013-05-14T18:26:15+08:00</updated>
   <id>http://javame.tk/</id>
   <author>
     <name><![CDATA[Goofy]]></name>
@@ -20,10 +20,12 @@
     <id>http://javame.tk/blog/2013/03/05/How_to_Recover_Files_Deleted_by_Mistake_in_Git</id>
     <content type="html"><![CDATA[<ol>
 <li>找到commit记录如：f5810e08df0cb7cf82608d65cdb709cb430df2ea</li>
-<li>执行以下命令即可恢复删除的文件
-
-<blockquote><pre><code>git checkout f5810e08df0cb7cf82608d65cdb709cb430df2ea path/to/file
-</code></pre></blockquote></li>
+<li>
+执行以下命令即可恢复删除的文件
+```bash
+git checkout f5810e08df0cb7cf82608d65cdb709cb430df2ea path/to/file
+```
+</li>
 <li>重新commit push</li>
 </ol>
 
