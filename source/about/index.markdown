@@ -7,14 +7,12 @@ sharing: true
 footer: true
 ---
 
-This blog focus on:
-
+### This blog focus on:
 - Java based web developing
 - Linux
 - Open-source Technologies
 
-Contact me at:
-
+### Contact me at:
 * [tGoofy@twitter](https://twitter.com/GoofyWang)
 * [tGoofy@weibo](http://weibo.com/love4sweetie)
 * [abop@github](https://github.com/abop)
