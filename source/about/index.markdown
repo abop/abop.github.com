@@ -13,6 +13,8 @@ This blog focus on:
 - Linux
 - Open-source Technologies
 
+Contact me at:
+
 * [tGoofy@twitter](https://twitter.com/GoofyWang)
 * [tGoofy@weibo](http://weibo.com/love4sweetie)
 * [abop@github](https://github.com/abop)
