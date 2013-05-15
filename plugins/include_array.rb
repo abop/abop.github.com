@@ -37,8 +37,9 @@ module Jekyll
         end
 
         Dir.chdir(includes_dir) do
-          choices = Dir['**/*'].reject { |x| File.symlink?(x) }
-          if choices.include?(file)
+          #choices = Dir['**/*'].reject { |x| File.symlink?(x) }
+          #if choices.include?(file)
+          if !File.symlink?(file)
             source = File.read(file)
             partial = Liquid::Template.parse(source)
             context.stack do
