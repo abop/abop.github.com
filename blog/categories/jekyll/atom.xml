@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jekyll | Goofy's Blog]]></title>
+  <link href="http://javame.tk/blog/categories/jekyll/atom.xml" rel="self"/>
+  <link href="http://javame.tk/"/>
+  <updated>2013-05-15T15:10:12+08:00</updated>
+  <id>http://javame.tk/</id>
+  <author>
+    <name><![CDATA[Goofy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Debug with jekyll(rubygem)]]></title>
+    <link href="http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem/"/>
+    <updated>2013-05-15T14:12:00+08:00</updated>
+    <id>http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem</id>
+    <content type="html"><![CDATA[<p>折腾octopress的时候，遇到很多generate出错的情况，而提供的出错信息很难看出问题在哪，一般只能看到某个rb文件某行出了什么错，这个时候ruby的调试工具<a href="https://github.com/cldwalker/debugger">debugger</a>就可以派上用场了。</p>
+
+<h3> 1. 首先安装debugger gem </h3>
+
+
+<p>```bash
+$ gem install debugger</p>
+
+<h1>If install fails, try passing headers path</h1>
+
+<p>$ gem install debugger &mdash; &mdash;with-ruby-include=PATH_TO_HEADERS
+```</p>
+
+<h3> 2. 如果使用bundler，把gem添加到Gemfile </h3>
+
+
+<p><code>
+gem 'debugger'
+</code></p>
+
+<h3> 3. 在执行出错的rb文件中添加断点 </h3>
+
+
+<p>```ruby xxx.rb</p>
+
+<h1>在出错的语句前添加</h1>
+
+<p>require &lsquo;debugger&rsquo;; debugger
+```</p>
+
+<p>然后重新执行出错的rake task, 程序会停在断点处，直接输入变量名来查看变量，输入help查看命令列表。debugger用法详见<a href="http://bashdb.sourceforge.net/ruby-debug.html">debugger tutorial</a>。</p>
+]]></content>
+  </entry>
+  
+</feed>

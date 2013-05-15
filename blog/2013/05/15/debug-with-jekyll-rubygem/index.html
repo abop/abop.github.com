@@ -5,11 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: work - Goofy's Blog</title>
+  <title>Debug with jekyll(rubygem) - Goofy's Blog</title>
   <meta name="author" content="Goofy">
 
   
-  <meta name="description" content="Category: work">
+  <meta name="description" content="折腾octopress的时候，遇到很多generate出错的情况，而提供的出错信息很难看出问题在哪，一般只能看到某个rb文件某行出了什么错，这个时候ruby的调试工具debugger就可以派上用场了。 1. 首先安装debugger gem 1
+2
+3
+4
+$ gem install &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://javame.tkblog/categories/work">
+  <link rel="canonical" href="http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Goofy's Blog" type="application/atom+xml">
@@ -77,36 +81,135 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Work</h1>
+    
+      <h1 class="entry-title">Debug With Jekyll(rubygem)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-15T14:12:00+08:00" pubdate data-updated="true">May 15<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
+
+
+<div class="entry-content"><p>折腾octopress的时候，遇到很多generate出错的情况，而提供的出错信息很难看出问题在哪，一般只能看到某个rb文件某行出了什么错，这个时候ruby的调试工具<a href="https://github.com/cldwalker/debugger">debugger</a>就可以派上用场了。</p>
+
+<h3> 1. 首先安装debugger gem </h3>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install debugger
+</span><span class='line'>
+</span><span class='line'><span class="c"># If install fails, try passing headers path</span>
+</span><span class='line'><span class="nv">$ </span>gem install debugger -- --with-ruby-include<span class="o">=</span>PATH_TO_HEADERS
+</span></code></pre></td></tr></table></div></figure>
 
 
 
-  
-  <h2>2013</h2>
 
-<article>
-  
-<h1><a href="/blog/2013/03/04/doc-referring-tech-solution/">开发中心资源管理技术方案</a></h1>
-<time datetime="2013-03-04T00:00:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>04</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/work/'>work</a></span>
-</footer>
+<h3> 2. 如果使用bundler，把gem添加到Gemfile </h3>
 
 
-</article>
 
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gem <span class="s1">&#39;debugger&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> 3. 在执行出错的rb文件中添加断点 </h3>
+
+
+
+
+<figure class='code'><figcaption><span>xxx.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#在出错的语句前添加</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;debugger&#39;</span><span class="p">;</span> <span class="n">debugger</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后重新执行出错的rake task, 程序会停在断点处，直接输入变量名来查看变量，输入help查看命令列表。debugger用法详见<a href="http://bashdb.sourceforge.net/ruby-debug.html">debugger tutorial</a>。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Goofy</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-15T14:12:00+08:00" pubdate data-updated="true">May 15<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jekyll/'>jekyll</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem/" data-via="tGoofy" data-counturl="http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/05/13/using-variables-and-shell-commands-in-sed/" title="Previous Post: Using Variables and Shell-commands in Sed">&laquo; Using Variables and Shell-commands in Sed</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -199,7 +302,10 @@
       var disqus_shortname = 'abop';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem/';
+        var disqus_url = 'http://javame.tk/blog/2013/05/15/debug-with-jekyll-rubygem/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
