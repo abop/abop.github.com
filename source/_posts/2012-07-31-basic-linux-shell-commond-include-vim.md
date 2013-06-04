@@ -12,6 +12,9 @@ categories: [linux, shell, vim]
 * 普通任务执行时ctrl+z挂起到后台，但任务会暂停
 * bg jobnumber让挂起任务运行
 * fg 切换到前台
+* ps aux|grep 1370326845228.sh|tr -s ' ' | cut -d ' ' -f2 |xargs sudo kill
+* tr -s '分隔符' 替换连续字符为一个
+* cut -d '分隔符' -fn 分列，取第n列
 
 ====
 
