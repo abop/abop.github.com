@@ -45,11 +45,11 @@ published: true
 
 <h3 id="maven_basics">Maven基础</h3>
 
-1. 坐标是指项目的唯一标识，以GAV（groupId，artifactId和version）区分， groupId包含公司和内部组（或产品线）的信息，如com.taobao.mercury，表示taobao.com下的mercury项目组；ArtifactId则表示项目的名称，如mercury-web，Version则表示某一Artifact的版本，如1.0-SNAPSHOT
+1. 坐标是指项目的唯一标识，以GAV（groupId，artifactId和version）区分， groupId包含公司和内部组（或产品线）的信息，如com.taobao.shoucangjia，表示taobao.com下的收藏夹项目组；ArtifactId则表示项目的名称，如shoucangjia-web，Version则表示某一Artifact的版本，如1.0-SNAPSHOT
 
 2. 依赖是指项目所依赖的相关jar包
 
-3. 仓库是指存放项目的产出（Artifact）的仓库，如http://mvnrepo.taobao.ali.com/mvn/repository
+3. 仓库是指存放项目的产出（Artifact）的仓库，如http://mvnrepo.maven.com/mvn/repository
 
 4. 插件是Maven的设计机制，Maven包含一个核心功能组件，而扩展功能都是通过插件完成，即使我们最常见的编译功能也是通过compiler插件完成的。
 
@@ -481,7 +481,7 @@ p:action="cleanup" />
 </beans:beans>
 ```
 
-假设用户以URL：http://favorite.daily.taobao.net/collect_list.htm 来访问Webx应用。WebxFrameworkFilter接收请求，并且一路顺利到达pipeline。然后Pipeline开始依次执行它的valves（下面的描述略过一些相对次要的步骤）：
+假设用户以URL：http://shoucangjia.com/collect_list.htm 来访问Webx应用。WebxFrameworkFilter接收请求，并且一路顺利到达pipeline。然后Pipeline开始依次执行它的valves（下面的描述略过一些相对次要的步骤）：
 
 1. &lt;analyzeURL> - 分析URL
 
